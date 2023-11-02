@@ -6,7 +6,7 @@ __lua__
 function _init()
 	player={
 			sp=1,
-			x=900,
+			x=64,
 			y=15,
 			w=8,
 			h=8,
@@ -51,13 +51,6 @@ function _init()
 		map_start_y=0
 		map_end_y=256
 		
-		---test---
-		x1r=0 y1r=0 x2r=0 y2r=0
-		collide_l="no"
-		collide_r="no"
-		collide_u="no"
-		collide_d="no"
-		---
 		
 		anim_death=false
 		fake_door=false
@@ -113,10 +106,11 @@ function _draw()
 		spr(frm_batg[flr(sp_anim)],b.x,b.y,1,1)
 		spr(frm_batb[flr(sp_anim)],b.x+4,b.y+4,1,1)
 	end
-	
+	aide_control()
 	if anim_death then
 	spr(132,984,216,4,4)
 	end
+	
 	
 	if fake_door then
 	spr(frm_pumpkin[flr(sp_anim)],824,64,2,2)
@@ -295,13 +289,16 @@ function player_update()
 	end
 	if player.y>map_end_y-player.h then
 		player.y=map_end_y-player.h
-end
-
+	end
+	play_music()
 --check player dead
 		if player.y>240 and player.x<928 then
 			player.x=15
 			player.y=15
 			music(00,-1)--reload music to the start
+			music1=false
+			music2=false
+			music3=false
 		end
 end
 
@@ -527,6 +524,11 @@ sp_anim=1
 		frm_candles2={14,15}
 		frm_discoball={141,173,171,139}
 		frm_deco={202,204}
+		
+		--music
+		music1=false
+		music2=false
+		music3=false
 end
 
 function anim_items()
@@ -601,6 +603,33 @@ function no_door()
 	mset(896,64,46)
 	mset(896,72,46)
 	mset(888,72,46)
+end
+-->8
+--music
+function play_music()
+ if player.x >=464 and player.x<752  and music1==false then
+		music(3,-1)
+		music1=true
+	end
+	
+	if player.x >=760 and player.y <112 and music2==false then
+		music(2,-1)
+		music2=true
+		music1=false
+	end
+	
+		if player.x >=784 and player.y>112  and music3==false then
+		music(5,-1)
+		music2=false
+		music3=true
+	end
+end 
+-->8
+--aide controle
+function aide_control()
+ 	print( "press ⬆️ to interact",10*8,14*8, 10 )
+		print( "press x to jump.",40*8,14*8, 10 )
+		print("press  to open a door.",776,4*8,10)
 end
 __gfx__
 00000000fffed3fffffed3ffffffed3fffffed3fffffed3fffffed3fffffff3fffffffffffed3fffffffffffb3fffffffffffffffffffffffff9fffffff4ffff
